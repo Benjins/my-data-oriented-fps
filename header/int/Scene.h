@@ -1,0 +1,43 @@
+#ifndef SCENE_H
+#define SCENE_H
+
+#include "Model.h"
+#include "Component.h"
+#include "Entity.h"
+
+#define MODEL_COUNT 12
+#define PHYSICS_COUNT 12
+#define RENDERING_COUNT 12
+#define ENTITY_COUNT 12
+
+struct Scene{
+
+	//Input input;
+	Model meshes [MODEL_COUNT];
+	PhysicsComp physics[PHYSICS_COUNT];
+	RenderingComp rendering[RENDERING_COUNT];
+	//Texture textures[TEXTURE_COUNT];
+	Entity entities[ENTITY_COUNT];
+
+	int playerId;
+
+	int meshCount;
+	int physCount;
+	int rendCount;
+	int entityCount;
+
+	//Terrain level;
+
+	Scene();
+
+	void Update();
+
+	void Render();
+
+	//Model* GetMesh();
+
+	RenderingComp* AddRenderer(const Entity& entity);
+	Entity* AddEntity();
+};
+
+#endif
