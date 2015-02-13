@@ -16,6 +16,9 @@ void RenderingComp::Render(const Entity* entities) const{
 	GLuint pos = glGetUniformLocation(shaderProgram, "_objectMatrix");
 	glUniformMatrix4fv(pos, 1, GL_TRUE,  &matrix.m[0][0]);
 
+	Mat4x4 perspMatrix = GetPerspectiveMatrix(8.0f/6,80,0.2f,200.0f);
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "_perspMatrix"), 1, GL_TRUE,  &perspMatrix.m[0][0]); 
+
 	glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, verticesVBO);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -136,4 +139,24 @@ bool ReadFile(string fileName, string& readInto){
         cerr << fileName << ": unable to open file.\n";
 		return false;
     }
+}
+
+Mat4x4 GetPerspectiveMatrix(float aspectRatio, float fieldOfView, float nearZ, float farZ){
+	Mat4x4 persp;
+
+	float fieldOfView_Rad = fieldOfView/180*3.14159265f;
+	float tanHalfFOV = tanf(fieldOfView_Rad/2);
+	float zRange = nearZ - farZ;
+
+	float x1 = 1/aspectRatio/tanHalfFOV;
+	float y2 = 1/tanHalfFOV;
+	float z3 = (-nearZ - farZ)/zRange;
+	float z4 = 2*farZ*nearZ/zRange;
+	
+	persp.SetRow(0, Vector4(x1,0,0,0));
+	persp.SetRow(1, Vector4(0,y2,0,0));
+	persp.SetRow(2, Vector4(0,0,z3,z4));
+	persp.SetRow(3, Vector4(0,0,1,0));
+	
+	return persp;
 }

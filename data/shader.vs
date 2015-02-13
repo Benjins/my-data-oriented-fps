@@ -11,6 +11,6 @@ uniform mat4 _objectMatrix;
 
 void main()
 {
-    gl_Position = _objectMatrix * vec4(Position*0.2, 1.0);
+    gl_Position = _perspMatrix * _objectMatrix * vec4(Position*0.2, 1.0);
 	uv_coord = UV;
 }

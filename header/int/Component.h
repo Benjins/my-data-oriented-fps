@@ -8,7 +8,7 @@
 
 using std::string;
 
-struct Entity; struct Texture;
+struct Entity; struct Texture; struct Mat4x4;
 
 struct Component{
 	int id;
@@ -42,5 +42,6 @@ struct PhysicsComp : public Component{
 	//Collision stuff
 };
 
+Mat4x4 GetPerspectiveMatrix(float aspectRatio, float fieldOfView, float nearZ, float farZ);
 
 #endif

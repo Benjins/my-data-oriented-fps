@@ -37,7 +37,7 @@ int main(int argc, char** argv){
 
 	glClearColor(0,0,0,0);
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
+	//glDepthFunc(GL_LEQUAL);
 
 	Entity* player = mainScene.AddEntity();
 	player->transform.position = Vector3(0,0,-5);
@@ -58,10 +58,10 @@ int main(int argc, char** argv){
 void Render(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	static float time = 0;
-	time += 0.01f;
+	time += 0.001f;
 
 	mainScene.entities[0].transform.rotation = Quaternion(X_AXIS, time);
-	mainScene.entities[0].transform.position = Vector3(0, 0, -1);
+	mainScene.entities[0].transform.position = Vector3(0, sinf(time/2), sinf(time/5) + 0.2f);
 
 	mainScene.Render();
 
