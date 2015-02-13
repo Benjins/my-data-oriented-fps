@@ -18,6 +18,7 @@ struct SCTransform{
 
 	Mat4x4 LocalToGlobalMatrix() const;
 	Vector3 LocalToGlobal(const Vector3& global) const;
+	Mat4x4 GetCameraMatrix() const;
 };
 
 #endif

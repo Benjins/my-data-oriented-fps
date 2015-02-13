@@ -8,7 +8,7 @@
 
 using std::string;
 
-struct Entity; struct Texture; struct Mat4x4;
+struct Entity; struct Texture; struct Mat4x4; struct Scene;
 
 struct Component{
 	int id;
@@ -24,7 +24,7 @@ struct RenderingComp : public Component{
 	GLuint uvsVBO;
 	int vertCount;
 
-	void Render(const Entity* entities) const;
+	void Render(const Scene& mainScene) const;
 
 	void SetMeshMatTexture(const string& shader, const string& mesh, const string& texture);
 

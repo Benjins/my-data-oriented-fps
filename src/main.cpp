@@ -61,7 +61,7 @@ void Render(){
 	time += 0.001f;
 
 	mainScene.entities[0].transform.rotation = Quaternion(X_AXIS, time);
-	mainScene.entities[0].transform.position = Vector3(0, sinf(time/2), sinf(time/5) + 0.2f);
+	mainScene.entities[0].transform.position = Vector3(0, 0, sinf(time/25) + 0.2f);
 
 	mainScene.Render();
 
@@ -72,5 +72,23 @@ void Render(){
 void OnKey(unsigned char key, int x, int y){
 	if(key == 'x' || key == 'X'){
 		running = false;
+	}
+	else if(key == 'w'){
+		mainScene.camera.position.z += 0.01f;
+	}
+	else if(key == 's'){
+		mainScene.camera.position.z -= 0.01f;
+	}
+	else if(key == 'a'){
+		mainScene.camera.position.x -= 0.01f;
+	}
+	else if(key == 'd'){
+		mainScene.camera.position.x += 0.01f;
+	}
+	else if(key == 'q'){
+		mainScene.camera.position.y += 0.01f;
+	}
+	else if(key == 'z'){
+		mainScene.camera.position.y -= 0.01f;
 	}
 }

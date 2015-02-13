@@ -7,6 +7,8 @@ Scene::Scene(){
 	entityCount = 0;
 
 	playerId = 0;
+
+	camera = SCTransform();
 }
 
 void Scene::Update(){
@@ -15,7 +17,7 @@ void Scene::Update(){
 
 void Scene::Render(){
 	for(int i = 0; i < rendCount; i++){
-		rendering[i].Render(entities);
+		rendering[i].Render(*this);
 	}
 }
 

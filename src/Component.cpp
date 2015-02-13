@@ -2,22 +2,26 @@
 #include "../header/int/Entity.h"
 #include "../header/int/Model.h"
 #include "../header/int/Texture.h"
+#include "../header/int/Scene.h"
 
 #include <fstream>
 
 using std::ifstream;
 
-void RenderingComp::Render(const Entity* entities) const{
+void RenderingComp::Render(const Scene& mainScene) const{
 	glUseProgram(shaderProgram);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-	Mat4x4 matrix = entities[entity].transform.LocalToGlobalMatrix();
+	Mat4x4 matrix = mainScene.entities[entity].transform.LocalToGlobalMatrix();
 	GLuint pos = glGetUniformLocation(shaderProgram, "_objectMatrix");
 	glUniformMatrix4fv(pos, 1, GL_TRUE,  &matrix.m[0][0]);
 
 	Mat4x4 perspMatrix = GetPerspectiveMatrix(8.0f/6,80,0.2f,200.0f);
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "_perspMatrix"), 1, GL_TRUE,  &perspMatrix.m[0][0]); 
+
+	Mat4x4 camMatrix = mainScene.camera.GetCameraMatrix();
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "_cameraMatrix"), 1, GL_TRUE,  &camMatrix.m[0][0]);
 
 	glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, verticesVBO);

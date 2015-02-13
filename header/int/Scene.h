@@ -19,6 +19,8 @@ struct Scene{
 	//Texture textures[TEXTURE_COUNT];
 	Entity entities[ENTITY_COUNT];
 
+	SCTransform camera;
+
 	int playerId;
 
 	int meshCount;
