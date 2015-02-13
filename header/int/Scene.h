@@ -4,6 +4,7 @@
 #include "Model.h"
 #include "Component.h"
 #include "Entity.h"
+#include "Input.h"
 
 #define MODEL_COUNT 12
 #define PHYSICS_COUNT 12
@@ -12,7 +13,7 @@
 
 struct Scene{
 
-	//Input input;
+	Input input;
 	Model meshes [MODEL_COUNT];
 	PhysicsComp physics[PHYSICS_COUNT];
 	RenderingComp rendering[RENDERING_COUNT];
@@ -33,6 +34,8 @@ struct Scene{
 	Scene();
 
 	void Update();
+
+	void UpdateCamera();
 
 	void Render();
 

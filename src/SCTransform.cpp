@@ -15,6 +15,28 @@ SCTransform::SCTransform(const SCTransform& orig){
 	parent = orig.parent;
 }
 
+Vector3 SCTransform::Forward() const{
+	if(parent != NULL){
+		return Rotate(parent->Forward(), rotation);
+	}
+	return Rotate(Z_AXIS, rotation);
+}
+
+Vector3 SCTransform::Up() const{
+	if(parent != NULL){
+		return Rotate(parent->Up(), rotation);
+	}
+	return Rotate(Y_AXIS, rotation);
+}
+
+Vector3 SCTransform::Right() const{
+	if(parent != NULL){
+		return Rotate(parent->Right(), rotation);
+	}
+	return Rotate(X_AXIS, rotation);
+}
+
+
 Mat4x4 SCTransform::LocalToGlobalMatrix() const{
 	Mat4x4 matrix;
 	matrix.SetColumn(0, Vector4(Rotate(X_AXIS * scale.x, rotation), 0));

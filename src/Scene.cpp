@@ -12,7 +12,7 @@ Scene::Scene(){
 }
 
 void Scene::Update(){
-	entities[playerId];
+	UpdateCamera();
 }
 
 void Scene::Render(){
@@ -46,4 +46,39 @@ Entity* Scene::AddEntity(){
 	Entity* ent = &entities[entityCount];
 	entityCount++;
 	return ent;
+}
+
+void Scene::UpdateCamera(){
+	if(input.GetKey('w')){
+		Vector3 moveVec = camera.Forward();
+		moveVec.y = 0;
+		moveVec.Normalize();
+		camera.position = camera.position + moveVec * 0.001f;
+	}
+	if(input.GetKey('s')){
+		Vector3 moveVec = camera.Forward() * -1;
+		moveVec.y = 0;
+		moveVec.Normalize();
+		camera.position = camera.position + moveVec * 0.001f;
+	}
+	if(input.GetKey('a')){
+		Vector3 moveVec = camera.Right() * -1;
+		moveVec.y = 0;
+		moveVec.Normalize();
+		camera.position = camera.position + moveVec * 0.001f;
+	}
+	if(input.GetKey('d')){
+		Vector3 moveVec = camera.Right();
+		moveVec.y = 0;
+		moveVec.Normalize();
+		camera.position = camera.position + moveVec * 0.001f;
+	}
+	if(input.GetKey('q')){
+		camera.position.y += 0.001f;
+	}
+	if(input.GetKey('z')){
+		camera.position.y -= 0.001f;
+	}
+
+	camera.rotation = Quaternion(Y_AXIS, input.mouseX/80) *  Quaternion(X_AXIS, input.mouseY/80);
 }
