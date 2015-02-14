@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "Input.h"
 #include "Timer.h"
+#include "Level.h"
 
 #define MODEL_COUNT 12
 #define PHYSICS_COUNT 12
@@ -16,11 +17,13 @@ struct Scene{
 
 	Input input;
 	Timer timer;
-	Model meshes [MODEL_COUNT];
+	//Model meshes [MODEL_COUNT];
 	PhysicsComp physics[PHYSICS_COUNT];
 	RenderingComp rendering[RENDERING_COUNT];
 	//Texture textures[TEXTURE_COUNT];
 	Entity entities[ENTITY_COUNT];
+
+	Level level;
 
 	SCTransform camera;
 
@@ -43,7 +46,7 @@ struct Scene{
 
 	//Model* GetMesh();
 
-	RenderingComp* AddRenderer(const Entity& entity);
+	RenderingComp* AddRenderer(const Entity* entity);
 	Entity* AddEntity();
 };
 

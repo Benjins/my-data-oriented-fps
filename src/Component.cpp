@@ -13,11 +13,17 @@ void RenderingComp::Render(const Scene& mainScene) const{
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-	Mat4x4 matrix = mainScene.entities[entity].transform.LocalToGlobalMatrix();
+	Mat4x4 matrix;
+	if(entity != -1){
+		matrix = mainScene.entities[entity].transform.LocalToGlobalMatrix();
+	}
+	else{
+		matrix = mainScene.level.transform.LocalToGlobalMatrix();
+	}
 	GLuint pos = glGetUniformLocation(shaderProgram, "_objectMatrix");
 	glUniformMatrix4fv(pos, 1, GL_TRUE,  &matrix.m[0][0]);
 
-	Mat4x4 perspMatrix = GetPerspectiveMatrix(8.0f/6,80,0.2f,200.0f);
+	Mat4x4 perspMatrix = GetPerspectiveMatrix(8.0f/6,80,0.04f,200.0f);
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "_perspMatrix"), 1, GL_TRUE,  &perspMatrix.m[0][0]); 
 
 	Mat4x4 camMatrix = mainScene.camera.GetCameraMatrix();

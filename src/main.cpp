@@ -49,18 +49,24 @@ int main(int argc, char** argv){
 	glEnable(GL_DEPTH_TEST);
 	//glDepthFunc(GL_LEQUAL);
 
-	Entity* cube = mainScene.AddEntity();
-	cube->transform.position = Vector3(0,3,-5);
-	RenderingComp* comp = mainScene.AddRenderer(*cube);
+	Floor floor = {Vector2(-5, -5), Vector2(5, 5), 0, 4.0f, 0};
+	Wall wall = {Vector2(2, 3), Vector2(5, 1), 3.0f};
+	mainScene.level.floors.push_back(floor);
+	mainScene.level.walls.push_back(wall);
 
+	mainScene.level.SetRenderingCompMesh(*mainScene.AddRenderer(NULL), "data/Texture2.bmp");
+
+	Entity* cube = mainScene.AddEntity();
+	cube->transform.position = Vector3(0,3,0);
+	RenderingComp* comp = mainScene.AddRenderer(cube);
 	comp->SetMeshMatTexture("data/shader", "data/test.obj", "data/Texture.bmp");
 
-	Entity* floor = mainScene.AddEntity();
-	floor->transform.position = Vector3(0,0,0);
-	floor->transform.scale = Vector3(3,3,3);
-	RenderingComp* floorRend = mainScene.AddRenderer(*floor);
-
-	floorRend->SetMeshMatTexture("data/shader", "data/floor.obj", "data/Texture2.bmp");
+	Entity* cube2 = mainScene.AddEntity();
+	cube2->transform.parent = &cube->transform;
+	cube2->transform.position = Vector3(0.4f,0,0);
+	cube2->transform.scale = Vector3(0.3f, 0.3f, 0.5f);
+	RenderingComp* cube2Rend = mainScene.AddRenderer(cube2);
+	cube2Rend->SetMeshMatTexture("data/shader", "data/test.obj", "data/Texture2.bmp");
 
 	mainScene.camera.position = Vector3(0,2,0);
 
@@ -73,12 +79,13 @@ int main(int argc, char** argv){
 		mainScene.input.EndFrame();
 	}
 
-
 	return 0;
 }
 
 void Render(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	mainScene.entities[0].transform.rotation = Quaternion(Y_AXIS, mainScene.timer.totalTime);
 
 	mainScene.Render();
 

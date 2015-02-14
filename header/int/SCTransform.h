@@ -1,5 +1,5 @@
 #ifndef SCTRANSFORM_H
-#define SCTRASNFORM_H
+#define SCTRANSFORM_H
 
 #include "../ext/Vector3.h"
 #include "../ext/Quaternion.h"

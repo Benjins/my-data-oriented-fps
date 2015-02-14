@@ -21,14 +21,19 @@ void Scene::Render(){
 	}
 }
 
-
-RenderingComp* Scene::AddRenderer(const Entity& entity){
+//Pass NULL to add the rendering component for the level
+RenderingComp* Scene::AddRenderer(const Entity* entity){
 	if(rendCount >= RENDERING_COUNT){
 		cout << "\nHit max renderer limit.\n";
 		return NULL;
 	}
 
-	rendering[rendCount].entity = entity.id;
+	if(entity == NULL){
+		rendering[rendCount].entity = -1;
+	}
+	else{
+		rendering[rendCount].entity = entity->id;
+	}
 	RenderingComp* rend = &rendering[rendCount];
 	rendCount++;
 	return rend;
