@@ -2,7 +2,52 @@
 #include "..\header\int\Component.h"
 #include "..\header\int\Texture.h"
 
+float Level::FindHeight(const Vector3& position){
+	Vector3 localPos = transform.GlobalToLocal(position);
 
+	Vector2 gridPos = Vector2(localPos.x, localPos.z);
+
+	float currHeight = localPos.y;
+	int currDepth = INT_MIN;
+	for(auto iter = floors.begin(); iter != floors.end(); iter++){
+		if(iter->depth > currDepth && BoundsContains(gridPos, iter->ulCorner, iter->brCorner)){
+			currDepth = iter->depth;
+			currHeight = iter->floorHeight;
+		}
+	}
+
+	localPos.y = currHeight;
+	return transform.LocalToGlobal(localPos).y;
+}
+
+//Is pt contained in the AABB formed by ul (upper left) and br (bottom right)
+bool BoundsContains(const Vector2& pt, const Vector2& ul, const Vector2& br){
+	return pt.x > ul.x && pt.y > ul.y
+		&& pt.x < br.x && pt.y < br.y;
+}
+
+Vector3 Level::ResolveCollisions(const Vector3& from, const Vector3& to){
+	Vector3 localFrom = transform.GlobalToLocal(from);
+	Vector3 localTo   = transform.GlobalToLocal(to);
+
+	for(auto iter = walls.begin(); iter != walls.end(); iter++){
+		Vector3 edge1 = Vector3(iter->start.x, iter->height, iter->start.y) - Vector3(iter->start.x, 0, iter->start.y);
+		Vector3 edge2 = Vector3(iter->end.x, 0, iter->end.y) - Vector3(iter->start.x, 0, iter->start.y);
+		Vector3 normal = CrossProduct(edge1, edge2);
+
+		//cout << "LocalFrom: " << localFrom.x << ", " << localFrom.y << ", " << localFrom.z << endl;
+		//Vector3(iter->start.x, 0, iter->start.y).Print();
+
+		float fromDist = DotProduct(localFrom - Vector3(iter->start.x, 0, iter->start.y), normal);
+		float   toDist = DotProduct(localTo   - Vector3(iter->start.x, 0, iter->start.y), normal);
+		//cout << "ToDist: " << toDist << "  FromDist: " << fromDist << endl;
+		if(toDist * fromDist < 0){
+			return from;
+		}
+	}
+
+	return to;
+}
 
 void Level::SetRenderingCompMesh(RenderingComp& rend, const string& texture){
 	rend.entity = -1;
@@ -85,62 +130,3 @@ void Level::SetRenderingCompMesh(RenderingComp& rend, const string& texture){
 	glValidateProgram(rend.shaderProgram);
 }
 
-
-/*
-	Model model;
-	model.ImportFromOBJ(mesh);
-
-	int size = model.faces.size() * 3;
-	vertCount = size;
-	vector<Vector3> Vertices;
-	vector<Vector2> uvCoords;
-
-	
-    for(int i = 0; i < model.faces.size(); i++){
-		Face face = model.faces[i];
-
-		Vertices.push_back(model.vertices[face.v2].position);
-		Vertices.push_back(model.vertices[face.v1].position);
-		Vertices.push_back(model.vertices[face.v0].position);
-		
-		uvCoords.push_back(face.uv2);
-		uvCoords.push_back(face.uv1);
-		uvCoords.push_back(face.uv0);
-	}
-
-	
-	glGenBuffers(1, &verticesVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, verticesVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vector3)*Vertices.size(), &(Vertices[0]), GL_STATIC_DRAW);
-	
-	glGenBuffers(1, &uvsVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, uvsVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vector2)*uvCoords.size(), &(uvCoords[0]), GL_STATIC_DRAW);
-
-	texObject = new Texture(GL_TEXTURE_2D, texture);
-	texObject->Load();
-	this->texture = texObject->textureObj;
-
-	string vertShader;
-	string fragShader;
-	if(! (ReadFile(shader + ".vs", vertShader) && ReadFile(shader + ".fs", fragShader))){
-		cout << "Error reading files: " << shader << ".vs and " << shader << ".fs" << endl;
-		return;
-	}
-
-	shaderProgram = glCreateProgram();
-	AddShader(shaderProgram, vertShader.c_str(), GL_VERTEX_SHADER);
-	AddShader(shaderProgram, fragShader.c_str(), GL_FRAGMENT_SHADER);
-		
-	glLinkProgram(shaderProgram);
-
-	GLint Success;
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &Success);
-	if (Success == 0) {
-		char ErrorLog[1024];
-		glGetProgramInfoLog(shaderProgram, sizeof(ErrorLog), NULL, ErrorLog);
-		fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
-	}
-
-	glValidateProgram(shaderProgram);
-*/

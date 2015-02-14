@@ -18,7 +18,8 @@ void RenderingComp::Render(const Scene& mainScene) const{
 		matrix = mainScene.entities[entity].transform.LocalToGlobalMatrix();
 	}
 	else{
-		matrix = mainScene.level.transform.LocalToGlobalMatrix();
+		matrix = Mat4x4();// mainScene.level.transform.LocalToGlobalMatrix();
+		matrix.m[0][0] = matrix.m[1][1] = matrix.m[2][2] = 1;
 	}
 	GLuint pos = glGetUniformLocation(shaderProgram, "_objectMatrix");
 	glUniformMatrix4fv(pos, 1, GL_TRUE,  &matrix.m[0][0]);

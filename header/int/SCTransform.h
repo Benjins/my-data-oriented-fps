@@ -20,6 +20,7 @@ struct SCTransform{
 	Vector3 Up() const;
 	Vector3 Right() const;
 
+	Vector3 GlobalToLocal(const Vector3& original) const;
 
 	Mat4x4 LocalToGlobalMatrix() const;
 	Vector3 LocalToGlobal(const Vector3& global) const;

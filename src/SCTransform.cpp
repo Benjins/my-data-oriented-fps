@@ -61,9 +61,9 @@ Mat4x4 SCTransform::GetCameraMatrix() const{
 	Mat4x4 linMat;
 	Mat4x4 affMat;
 
-	linMat.SetColumn(0, Vector4(Rotate(X_AXIS / scale.x, rotation.Conjugate()), 0));
-	linMat.SetColumn(1, Vector4(Rotate(Y_AXIS / scale.y, rotation.Conjugate()), 0));
-	linMat.SetColumn(2, Vector4(Rotate(Z_AXIS / scale.z, rotation.Conjugate()), 0));
+	linMat.SetColumn(0, Vector4(Rotate(X_AXIS, rotation.Conjugate()), 0));
+	linMat.SetColumn(1, Vector4(Rotate(Y_AXIS, rotation.Conjugate()), 0));
+	linMat.SetColumn(2, Vector4(Rotate(Z_AXIS, rotation.Conjugate()), 0));
 	linMat.SetColumn(3, Vector4(0,0,0,1));
 
 	affMat.SetRow(0, Vector4(X_AXIS, -position.x));
@@ -78,4 +78,18 @@ Mat4x4 SCTransform::GetCameraMatrix() const{
 	}
 
 	return transMat;
+}
+
+Vector3 SCTransform::GlobalToLocal(const Vector3& global) const{
+	Vector3 localVec = global;
+	if(parent != NULL){
+		localVec = parent->GlobalToLocal(global);
+	}
+    localVec = localVec - position;
+    localVec = Rotate(localVec, rotation.Conjugate());
+    localVec = localVec.Scaled(Vector3( 1 / scale.x,
+                                        1 / scale.y,
+                                        1 / scale.z));
+
+    return localVec;
 }

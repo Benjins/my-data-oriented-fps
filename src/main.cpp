@@ -49,10 +49,12 @@ int main(int argc, char** argv){
 	glEnable(GL_DEPTH_TEST);
 	//glDepthFunc(GL_LEQUAL);
 
-	Floor floor = {Vector2(-5, -5), Vector2(5, 5), 0, 4.0f, 0};
-	Wall wall = {Vector2(2, 3), Vector2(5, 1), 3.0f};
+	Floor floor = {Vector2(-6, -6), Vector2(6, 6), 0, 4.0f, 0};
+	Wall wall = {Vector2(2, 3), Vector2(5, 1), 1.0f};
+	Wall wall2 = {Vector2(4, -3), Vector2(5, 1), 1.0f};
 	mainScene.level.floors.push_back(floor);
 	mainScene.level.walls.push_back(wall);
+	mainScene.level.walls.push_back(wall2);
 
 	mainScene.level.SetRenderingCompMesh(*mainScene.AddRenderer(NULL), "data/Texture2.bmp");
 
@@ -68,7 +70,7 @@ int main(int argc, char** argv){
 	RenderingComp* cube2Rend = mainScene.AddRenderer(cube2);
 	cube2Rend->SetMeshMatTexture("data/shader", "data/test.obj", "data/Texture2.bmp");
 
-	mainScene.camera.position = Vector3(0,2,0);
+	mainScene.camera.position = Vector3(0,0.3f,0);
 
 	while(running){
 		glutMainLoopEvent();
@@ -77,6 +79,8 @@ int main(int argc, char** argv){
 		Render();
 		glutPostRedisplay();
 		mainScene.input.EndFrame();
+
+		//cout << "Frame took: " << mainScene.timer.deltaTime * 1000 << " ms.\n";
 	}
 
 	return 0;

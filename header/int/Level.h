@@ -31,7 +31,14 @@ struct Level{
 	vector<Wall> walls;
 
 	void SetRenderingCompMesh(RenderingComp& rend, const string& texture);
+
+	//Takes position in global coords
+	float FindHeight(const Vector3& position);
+	Vector3 ResolveCollisions(const Vector3& from, const Vector3& to);
+
 };
+
+bool BoundsContains(const Vector2& pt, const Vector2& ul, const Vector2& br);
 
 /*-----Planning-----
 -Different height floors, ramps/stairs, walls, 
