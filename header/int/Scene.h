@@ -5,6 +5,7 @@
 #include "Component.h"
 #include "Entity.h"
 #include "Input.h"
+#include "Timer.h"
 
 #define MODEL_COUNT 12
 #define PHYSICS_COUNT 12
@@ -14,6 +15,7 @@
 struct Scene{
 
 	Input input;
+	Timer timer;
 	Model meshes [MODEL_COUNT];
 	PhysicsComp physics[PHYSICS_COUNT];
 	RenderingComp rendering[RENDERING_COUNT];

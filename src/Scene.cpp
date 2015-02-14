@@ -53,31 +53,31 @@ void Scene::UpdateCamera(){
 		Vector3 moveVec = camera.Forward();
 		moveVec.y = 0;
 		moveVec.Normalize();
-		camera.position = camera.position + moveVec * 0.001f;
+		camera.position = camera.position + moveVec * timer.deltaTime;
 	}
 	if(input.GetKey('s')){
 		Vector3 moveVec = camera.Forward() * -1;
 		moveVec.y = 0;
 		moveVec.Normalize();
-		camera.position = camera.position + moveVec * 0.001f;
+		camera.position = camera.position + moveVec * timer.deltaTime;
 	}
 	if(input.GetKey('a')){
 		Vector3 moveVec = camera.Right() * -1;
 		moveVec.y = 0;
 		moveVec.Normalize();
-		camera.position = camera.position + moveVec * 0.001f;
+		camera.position = camera.position + moveVec * timer.deltaTime;
 	}
 	if(input.GetKey('d')){
 		Vector3 moveVec = camera.Right();
 		moveVec.y = 0;
 		moveVec.Normalize();
-		camera.position = camera.position + moveVec * 0.001f;
+		camera.position = camera.position + moveVec * timer.deltaTime;
 	}
 	if(input.GetKey('q')){
-		camera.position.y += 0.001f;
+		camera.position.y +=  timer.deltaTime;
 	}
 	if(input.GetKey('z')){
-		camera.position.y -= 0.001f;
+		camera.position.y -= timer.deltaTime;
 	}
 
 	camera.rotation = Quaternion(Y_AXIS, input.mouseX/80) *  Quaternion(X_AXIS, input.mouseY/80);

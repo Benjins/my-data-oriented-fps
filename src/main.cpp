@@ -66,10 +66,10 @@ int main(int argc, char** argv){
 
 	while(running){
 		glutMainLoopEvent();
+		mainScene.timer.NextFrame();
 		mainScene.Update();
 		Render();
 		glutPostRedisplay();
-
 		mainScene.input.EndFrame();
 	}
 
@@ -79,11 +79,6 @@ int main(int argc, char** argv){
 
 void Render(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	static float time = 0;
-	time += 0.001f;
-
-	mainScene.entities[0].transform.rotation = Quaternion(X_AXIS, time);
-	mainScene.entities[0].transform.position.z = sinf(time/25) + 0.2f;
 
 	mainScene.Render();
 
