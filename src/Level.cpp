@@ -35,14 +35,18 @@ Vector3 Level::ResolveCollisions(const Vector3& from, const Vector3& to){
 		Vector3 edge2 = Vector3(iter->end.x, 0, iter->end.y) - Vector3(iter->start.x, 0, iter->start.y);
 		Vector3 normal = CrossProduct(edge1, edge2);
 
-		//cout << "LocalFrom: " << localFrom.x << ", " << localFrom.y << ", " << localFrom.z << endl;
-		//Vector3(iter->start.x, 0, iter->start.y).Print();
-
 		float fromDist = DotProduct(localFrom - Vector3(iter->start.x, 0, iter->start.y), normal);
 		float   toDist = DotProduct(localTo   - Vector3(iter->start.x, 0, iter->start.y), normal);
 		//cout << "ToDist: " << toDist << "  FromDist: " << fromDist << endl;
 		if(toDist * fromDist < 0){
-			return from;
+			Vector2 floorProjection = Vector2(localFrom.x, localFrom.z);
+			Vector2 wallDiff = floorProjection - iter->start;
+			Vector2 wallVec = (iter->end - iter->start).Normalized();
+			float overlap = DotProduct(wallDiff, wallVec);
+
+			if(overlap < (iter->end - iter->start).Magnitude() && overlap > 0){
+				return from;
+			}
 		}
 	}
 
