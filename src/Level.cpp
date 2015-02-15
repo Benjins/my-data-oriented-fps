@@ -7,7 +7,7 @@ float Level::FindHeight(const Vector3& position) const{
 
 	Vector2 gridPos = Vector2(localPos.x, localPos.z);
 
-	float currHeight = localPos.y;
+	float currHeight = -100;
 	int currDepth = INT_MIN;
 	for(auto iter = floors.begin(); iter != floors.end(); iter++){
 		if(iter->depth > currDepth && BoundsContains(gridPos, iter->ulCorner, iter->brCorner)){

@@ -10,6 +10,19 @@
 #pragma comment(lib, "freeglut.lib")
 #endif
 
+#define MEM_CHECK 1
+
+#if defined(MEM_CHECK) || defined(TESTING)
+#if defined(_WIN32) || defined(_WIN64)
+#  define _CRTDBG_MAP_ALLOC
+#  define _CRTDBG_MAP_ALLOC_NEW
+#  include <crtdbg.h>
+#endif
+#endif
+#if defined(MEM_CHECK) || defined(TESTING)
+#  include <assert.h>
+#endif
+
 void Render();
 
 Scene mainScene;
@@ -23,6 +36,18 @@ void OnMouse(int button, int state, int x, int y);
 void OnPassiveMouse(int x, int y);
 
 int main(int argc, char** argv){
+
+#if (defined(_WIN32) || defined(_WIN64)) && (defined(TESTING) || defined(MEM_CHECK))
+	//Windows memory leak checking
+	_CrtSetReportMode( _CRT_WARN, _CRTDBG_MODE_FILE );
+	_CrtSetReportFile( _CRT_WARN, _CRTDBG_FILE_STDOUT );
+	_CrtSetReportMode( _CRT_ERROR, _CRTDBG_MODE_FILE );
+	_CrtSetReportFile( _CRT_ERROR, _CRTDBG_FILE_STDOUT );
+	_CrtSetReportMode( _CRT_ASSERT, _CRTDBG_MODE_FILE );
+	_CrtSetReportFile( _CRT_ASSERT, _CRTDBG_FILE_STDOUT );
+	_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+#endif
+
 	
 	glutInit(&argc, argv);
 	glutInitWindowPosition(100,100);
@@ -85,6 +110,16 @@ int main(int argc, char** argv){
 	RenderingComp* cube2Rend = mainScene.AddRenderer(cube2);
 	cube2Rend->SetMeshMatTexture("data/shader", "data/test.obj", "data/Texture2.bmp");
 
+	Entity* enemy = mainScene.AddEntity();
+	enemy->transform.scale = Vector3(0.1f, 0.1f, 0.1f);
+	enemy->transform.position = Vector3(0, 0.3f, 0);
+	RenderingComp* enemyRend = mainScene.AddRenderer(enemy);
+	enemyRend->SetMeshMatTexture("data/shader", "data/test.obj", "data/Texture2.bmp");
+	EnemyComp* enemyComp = mainScene.AddEnemy(enemy);
+	enemyComp->targetPos = enemy->transform.position;
+	enemyComp->speed = 0;
+
+
 	mainScene.player.camera.position = Vector3(0,0,0);
 	mainScene.player.gravity = 2;
 	mainScene.player.cameraHeight = 0.3f;
@@ -99,6 +134,10 @@ int main(int argc, char** argv){
 
 		//cout << "Frame took: " << mainScene.timer.deltaTime * 1000 << " ms.\n";
 	}
+
+#if (defined(_WIN32) || defined(_WIN64)) && (defined(MEM_CHECK) || defined(TESTING))
+	assert(_CrtCheckMemory());
+#endif
 
 	return 0;
 }

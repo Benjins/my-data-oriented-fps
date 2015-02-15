@@ -42,6 +42,13 @@ struct PhysicsComp : public Component{
 	//Collision stuff
 };
 
+struct EnemyComp : public Component{
+	Vector3 targetPos;
+	float speed;
+
+	void Update(Scene& mainScene);
+};
+
 Mat4x4 GetPerspectiveMatrix(float aspectRatio, float fieldOfView, float nearZ, float farZ);
 
 #endif

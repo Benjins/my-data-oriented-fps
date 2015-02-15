@@ -13,6 +13,10 @@ Scene::Scene(){
 
 void Scene::Update(){
 	player.Update(*this);
+	for(int i = 0; i < enemyCount; i++){
+		enemies[i].Update(*this);
+	}
+	cout << "Time for this frame: " << timer.deltaTime * 1000 << " ms.\n";
 }
 
 void Scene::Render(){
@@ -37,6 +41,24 @@ RenderingComp* Scene::AddRenderer(const Entity* entity){
 	RenderingComp* rend = &rendering[rendCount];
 	rendCount++;
 	return rend;
+}
+
+EnemyComp* Scene::AddEnemy(const Entity* entity){
+	if(enemyCount >= ENEMY_COUNT){
+		cout << "\nHit max enemy limit.\n";
+		return NULL;
+	}
+
+	if(entity == NULL){
+		enemies[enemyCount].entity = -1;
+	}
+	else{
+		enemies[enemyCount].entity = entity->id;
+	}
+	EnemyComp* enemy = &enemies[enemyCount];
+	enemy->speed = 0.6f;
+	enemyCount++;
+	return enemy;
 }
 
 Entity* Scene::AddEntity(){

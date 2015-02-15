@@ -13,6 +13,7 @@
 #define PHYSICS_COUNT 12
 #define RENDERING_COUNT 12
 #define ENTITY_COUNT 12
+#define ENEMY_COUNT 12
 
 struct Scene{
 
@@ -21,6 +22,7 @@ struct Scene{
 	//Model meshes [MODEL_COUNT];
 	PhysicsComp physics[PHYSICS_COUNT];
 	RenderingComp rendering[RENDERING_COUNT];
+	EnemyComp enemies[ENEMY_COUNT];
 	//Texture textures[TEXTURE_COUNT];
 	Entity entities[ENTITY_COUNT];
 
@@ -37,6 +39,7 @@ struct Scene{
 	int physCount;
 	int rendCount;
 	int entityCount;
+	int enemyCount;
 
 	//Terrain level;
 
@@ -49,6 +52,7 @@ struct Scene{
 	//Model* GetMesh();
 
 	RenderingComp* AddRenderer(const Entity* entity);
+	EnemyComp* AddEnemy(const Entity* entity);
 	Entity* AddEntity();
 };
 

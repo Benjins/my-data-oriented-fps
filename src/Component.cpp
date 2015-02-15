@@ -109,6 +109,25 @@ RenderingComp::~RenderingComp(){
 	}	
 }
 
+void EnemyComp::Update(Scene& mainScene){
+	Vector3 differenceVec = mainScene.player.camera.position - mainScene.entities[entity].transform.position;
+	if(differenceVec.MagnitudeSquared() <= 9.0f && differenceVec.MagnitudeSquared() >= 1.0f){
+		targetPos = mainScene.player.camera.position;
+	}
+	else{
+		targetPos = mainScene.entities[entity].transform.position;
+	}
+
+	Vector3 goalVec = targetPos - mainScene.entities[entity].transform.position;
+	Vector3 posChange = goalVec.Normalized() * mainScene.timer.deltaTime;
+	if(goalVec.MagnitudeSquared() <= 0.00001f){
+		posChange = Vector3(0,0,0);
+	}
+	mainScene.entities[entity].transform.position = mainScene.entities[entity].transform.position + posChange;
+
+	mainScene.entities[entity].transform.position.y = mainScene.level.FindHeight(mainScene.entities[entity].transform.position) + 0.1f;
+}
+
 void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType){
     GLuint ShaderObj = glCreateShader(ShaderType);
 
