@@ -43,7 +43,7 @@ Vector3 Level::ResolveCollisions(const Vector3& from, const Vector3& to) const{
 			Vector2 wallVec = (iter->end - iter->start);
 			float overlap = DotProduct(wallDiff, wallVec);
 
-			if(overlap < (iter->end - iter->start).MagnitudeSquared() && overlap > 0){
+			if(overlap < (iter->end - iter->start).MagnitudeSquared() && overlap > 0 && localFrom.y <= iter->height + /*player height*/0.1f){
 				Vector3 collisionPlane = Vector3(iter->start.x, 0, iter->start.y) + normal * (toDist > 0 ? 0.1f : -0.1f);
 				Vector3 toProject = localTo - collisionPlane;
 				Vector3 projection = VectorProject(toProject, normal);
