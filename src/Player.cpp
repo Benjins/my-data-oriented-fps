@@ -59,7 +59,13 @@ void Player::Update(const Scene& mainScene){
 	camera.position.y += velocity * mainScene.timer.deltaTime;
 	if(camera.position.y <= groundY){
 		camera.position.y = groundY;
+		velocity = 0;
 		state = PLAYER_STATE::GROUNDED;
+	}
+	else{
+		if(state == PLAYER_STATE::GROUNDED){
+			state = PLAYER_STATE::FALLING;
+		}
 	}
 
 	camera.rotation = Quaternion(Y_AXIS, mainScene.input.mouseX/80) *  Quaternion(X_AXIS, mainScene.input.mouseY/80);
