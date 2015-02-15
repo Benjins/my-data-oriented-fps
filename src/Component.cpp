@@ -27,7 +27,7 @@ void RenderingComp::Render(const Scene& mainScene) const{
 	Mat4x4 perspMatrix = GetPerspectiveMatrix(8.0f/6,80,0.04f,200.0f);
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "_perspMatrix"), 1, GL_TRUE,  &perspMatrix.m[0][0]); 
 
-	Mat4x4 camMatrix = mainScene.camera.GetCameraMatrix();
+	Mat4x4 camMatrix = mainScene.player.camera.GetCameraMatrix();
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "_cameraMatrix"), 1, GL_TRUE,  &camMatrix.m[0][0]);
 
 	glEnableVertexAttribArray(0);

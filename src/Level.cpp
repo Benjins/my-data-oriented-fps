@@ -2,7 +2,7 @@
 #include "..\header\int\Component.h"
 #include "..\header\int\Texture.h"
 
-float Level::FindHeight(const Vector3& position){
+float Level::FindHeight(const Vector3& position) const{
 	Vector3 localPos = transform.GlobalToLocal(position);
 
 	Vector2 gridPos = Vector2(localPos.x, localPos.z);
@@ -17,7 +17,7 @@ float Level::FindHeight(const Vector3& position){
 	}
 
 	localPos.y = currHeight;
-	return transform.LocalToGlobal(localPos).y;
+	return localPos.y;
 }
 
 //Is pt contained in the AABB formed by ul (upper left) and br (bottom right)
@@ -26,7 +26,7 @@ bool BoundsContains(const Vector2& pt, const Vector2& ul, const Vector2& br){
 		&& pt.x < br.x && pt.y < br.y;
 }
 
-Vector3 Level::ResolveCollisions(const Vector3& from, const Vector3& to){
+Vector3 Level::ResolveCollisions(const Vector3& from, const Vector3& to) const{
 	Vector3 localFrom = transform.GlobalToLocal(from);
 	Vector3 localTo   = transform.GlobalToLocal(to);
 
@@ -49,7 +49,7 @@ Vector3 Level::ResolveCollisions(const Vector3& from, const Vector3& to){
 				Vector3 projection = VectorProject(toProject, normal);
 				Vector3 result = (toProject - projection) + collisionPlane;
 
-				localTo = result ;// transform.LocalToGlobal(result);
+				localTo = result;
 			}
 		}
 	}

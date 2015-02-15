@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "Timer.h"
 #include "Level.h"
+#include "Player.h"
 
 #define MODEL_COUNT 12
 #define PHYSICS_COUNT 12
@@ -23,9 +24,12 @@ struct Scene{
 	//Texture textures[TEXTURE_COUNT];
 	Entity entities[ENTITY_COUNT];
 
+	Player player;
+
 	Level level;
 
-	SCTransform camera;
+	//SCTransform camera;
+	float cameraHeight;
 
 	int playerId;
 
@@ -39,8 +43,6 @@ struct Scene{
 	Scene();
 
 	void Update();
-
-	void UpdateCamera();
 
 	void Render();
 
