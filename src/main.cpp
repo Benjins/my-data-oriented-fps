@@ -51,14 +51,25 @@ int main(int argc, char** argv){
 
 	Floor floor = {Vector2(-6, -6), Vector2(6, 6), 0, 4.0f, 0};
 	Floor floor2 = {Vector2(-2, 1), Vector2(-1, 2), 0.2f, 5.0f, 1};
-	Floor floor3 = {Vector2(0, 2), Vector2(1, 3), 0.4f, 5.0f, 2};
+	Floor floor3 = {Vector2(0, 2), Vector2(1, 3), 0.6f, 5.0f, 2};
 	Wall wall = {Vector2(2, 3), Vector2(5, 1), 1.0f};
 	Wall wall2 = {Vector2(4, -3), Vector2(5, 1), 1.0f};
+
+	Wall fWall1 = {Vector2(0, 2), Vector2(0, 3), 0.6f};
+	Wall fWall2 = {Vector2(1, 2), Vector2(1, 3), 0.6f};
+	Wall fWall3 = {Vector2(1, 2), Vector2(0, 2), 0.6f};
+	Wall fWall4 = {Vector2(1, 3), Vector2(0, 3), 0.6f};
+
 	mainScene.level.floors.push_back(floor);
 	mainScene.level.floors.push_back(floor2);
 	mainScene.level.floors.push_back(floor3);
 	mainScene.level.walls.push_back(wall);
 	mainScene.level.walls.push_back(wall2);
+
+	mainScene.level.walls.push_back(fWall1);
+	mainScene.level.walls.push_back(fWall2);
+	mainScene.level.walls.push_back(fWall3);
+	mainScene.level.walls.push_back(fWall4);
 
 	mainScene.level.SetRenderingCompMesh(*mainScene.AddRenderer(NULL), "data/Texture2.bmp");
 
