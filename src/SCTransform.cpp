@@ -51,8 +51,8 @@ Mat4x4 SCTransform::LocalToGlobalMatrix() const{
 	return matrix;
 }
 
-Vector3 SCTransform::LocalToGlobal(const Vector3& global) const{
-	return LocalToGlobalMatrix() * global;
+Vector3 SCTransform::LocalToGlobal(const Vector3& local) const{
+	return LocalToGlobalMatrix() * local;
 }
 
 Mat4x4 SCTransform::GetCameraMatrix() const{

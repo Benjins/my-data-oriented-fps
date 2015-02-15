@@ -21,7 +21,7 @@ inline Vector4 Mat4x4::operator*(const Vector4& param) const{
 
 Vector3 Mat4x4::operator*(const Vector3& param) const{
 	Vector4 result = *this * (Vector4(param, 1));
-	return Vector3(result.x, result.y, result.z);
+	return Vector3(result.w, result.x, result.y);
 }
 
 Mat4x4 Mat4x4::operator*(const Mat4x4& param) const{

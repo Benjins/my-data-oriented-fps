@@ -17,7 +17,9 @@ float Level::FindHeight(const Vector3& position) const{
 	}
 
 	localPos.y = currHeight;
-	return localPos.y;
+	Mat4x4 mat = transform.LocalToGlobalMatrix();
+	Vector3 globalPos = mat * localPos;
+	return globalPos.y;
 }
 
 //Is pt contained in the AABB formed by ul (upper left) and br (bottom right)

@@ -124,7 +124,6 @@ void EnemyComp::Update(Scene& mainScene){
 		posChange = Vector3(0,0,0);
 	}
 	mainScene.entities[entity].transform.position = mainScene.entities[entity].transform.position + posChange;
-
 	mainScene.entities[entity].transform.position.y = mainScene.level.FindHeight(mainScene.entities[entity].transform.position) + 0.1f;
 }
 
