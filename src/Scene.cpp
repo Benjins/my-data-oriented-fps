@@ -59,7 +59,7 @@ void Scene::UpdateCamera(){
 		Vector3 moveVec = camera.Forward();
 		moveVec.y = 0;
 		moveVec.Normalize();
-		newPos = newPos + moveVec * timer.deltaTime;
+		newPos = newPos + moveVec * 2 * timer.deltaTime;
 	}
 	if(input.GetKey('s')){
 		Vector3 moveVec = camera.Forward() * -1;
@@ -88,6 +88,7 @@ void Scene::UpdateCamera(){
 
 	float oldY = camera.position.y;
 	camera.position = level.ResolveCollisions(camera.position, newPos);
+
 	camera.position.y = oldY;// 0.25f + level.FindHeight(camera.position);
 
 	camera.rotation = Quaternion(Y_AXIS, input.mouseX/80) *  Quaternion(X_AXIS, input.mouseY/80);

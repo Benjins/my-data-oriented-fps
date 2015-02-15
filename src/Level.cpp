@@ -33,24 +33,28 @@ Vector3 Level::ResolveCollisions(const Vector3& from, const Vector3& to){
 	for(auto iter = walls.begin(); iter != walls.end(); iter++){
 		Vector3 edge1 = Vector3(iter->start.x, iter->height, iter->start.y) - Vector3(iter->start.x, 0, iter->start.y);
 		Vector3 edge2 = Vector3(iter->end.x, 0, iter->end.y) - Vector3(iter->start.x, 0, iter->start.y);
-		Vector3 normal = CrossProduct(edge1, edge2);
+		Vector3 normal = CrossProduct(edge1, edge2).Normalized();
 
-		float fromDist = DotProduct(localFrom - Vector3(iter->start.x, 0, iter->start.y), normal);
-		float   toDist = DotProduct(localTo   - Vector3(iter->start.x, 0, iter->start.y), normal);
+		float toDist = DotProduct(localTo - Vector3(iter->start.x, 0, iter->start.y), normal);
 		//cout << "ToDist: " << toDist << "  FromDist: " << fromDist << endl;
-		if(toDist * fromDist < 0){
+		if(toDist > -0.1f && toDist < 0.1f){
 			Vector2 floorProjection = Vector2(localFrom.x, localFrom.z);
 			Vector2 wallDiff = floorProjection - iter->start;
 			Vector2 wallVec = (iter->end - iter->start);
 			float overlap = DotProduct(wallDiff, wallVec);
 
 			if(overlap < (iter->end - iter->start).MagnitudeSquared() && overlap > 0){
-				return from;
+				Vector3 collisionPlane = Vector3(iter->start.x, 0, iter->start.y) + normal * (toDist > 0 ? 0.1f : -0.1f);
+				Vector3 toProject = localTo - collisionPlane;
+				Vector3 projection = VectorProject(toProject, normal);
+				Vector3 result = (toProject - projection) + collisionPlane;
+
+				localTo = result ;// transform.LocalToGlobal(result);
 			}
 		}
 	}
 
-	return to;
+	return localTo;
 }
 
 void Level::SetRenderingCompMesh(RenderingComp& rend, const string& texture){
