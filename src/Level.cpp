@@ -41,10 +41,10 @@ Vector3 Level::ResolveCollisions(const Vector3& from, const Vector3& to){
 		if(toDist * fromDist < 0){
 			Vector2 floorProjection = Vector2(localFrom.x, localFrom.z);
 			Vector2 wallDiff = floorProjection - iter->start;
-			Vector2 wallVec = (iter->end - iter->start).Normalized();
+			Vector2 wallVec = (iter->end - iter->start);
 			float overlap = DotProduct(wallDiff, wallVec);
 
-			if(overlap < (iter->end - iter->start).Magnitude() && overlap > 0){
+			if(overlap < (iter->end - iter->start).MagnitudeSquared() && overlap > 0){
 				return from;
 			}
 		}
