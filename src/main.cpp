@@ -117,7 +117,7 @@ int main(int argc, char** argv){
 	enemyRend->SetMeshMatTexture("data/shader", "data/test.obj", "data/Texture2.bmp");
 	EnemyComp* enemyComp = mainScene.AddEnemy(enemy);
 	enemyComp->targetPos = enemy->transform.position;
-	enemyComp->speed = 0;
+	enemyComp->speed = 0.2f;
 
 
 	mainScene.player.camera.position = Vector3(0,0,0);

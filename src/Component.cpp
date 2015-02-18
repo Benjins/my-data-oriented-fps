@@ -111,7 +111,7 @@ RenderingComp::~RenderingComp(){
 
 void EnemyComp::Update(Scene& mainScene){
 	Vector3 differenceVec = mainScene.player.camera.position - mainScene.entities[entity].transform.position;
-	if(differenceVec.MagnitudeSquared() <= 9.0f && differenceVec.MagnitudeSquared() >= 1.0f){
+	if(differenceVec.MagnitudeSquared() <= 9.0f && differenceVec.MagnitudeSquared() >= 0.4f){
 		targetPos = mainScene.player.camera.position;
 	}
 	else{
@@ -119,7 +119,7 @@ void EnemyComp::Update(Scene& mainScene){
 	}
 
 	Vector3 goalVec = targetPos - mainScene.entities[entity].transform.position;
-	Vector3 posChange = goalVec.Normalized() * mainScene.timer.deltaTime;
+	Vector3 posChange = goalVec.Normalized() * mainScene.timer.deltaTime * speed;
 	if(goalVec.MagnitudeSquared() <= 0.00001f){
 		posChange = Vector3(0,0,0);
 	}

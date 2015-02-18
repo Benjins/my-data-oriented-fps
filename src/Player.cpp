@@ -4,29 +4,30 @@
 
 void Player::Update(const Scene& mainScene){
 	Vector3 newPos = camera.position;
+	float deltaTimeClamp = min(0.3f, mainScene.timer.deltaTime);
 	if(mainScene.input.GetKey('w')){
 		Vector3 moveVec = camera.Forward();
 		moveVec.y = 0;
 		moveVec.Normalize();
-		newPos = newPos + moveVec * 2 * mainScene.timer.deltaTime;
+		newPos = newPos + moveVec * 3 * deltaTimeClamp;// mainScene.timer.deltaTime;
 	}
 	if(mainScene.input.GetKey('s')){
 		Vector3 moveVec = camera.Forward() * -1;
 		moveVec.y = 0;
 		moveVec.Normalize();
-		newPos = newPos + moveVec * mainScene.timer.deltaTime;
+		newPos = newPos + moveVec * deltaTimeClamp;// mainScene.timer.deltaTime;
 	}
 	if(mainScene.input.GetKey('a')){
 		Vector3 moveVec = camera.Right() * -1;
 		moveVec.y = 0;
 		moveVec.Normalize();
-		newPos = newPos + moveVec * mainScene.timer.deltaTime;
+		newPos = newPos + moveVec * deltaTimeClamp;// mainScene.timer.deltaTime;
 	}
 	if(mainScene.input.GetKey('d')){
 		Vector3 moveVec = camera.Right();
 		moveVec.y = 0;
 		moveVec.Normalize();
-		newPos = newPos + moveVec * mainScene.timer.deltaTime;
+		newPos = newPos + moveVec * deltaTimeClamp;// mainScene.timer.deltaTime;
 	}
 	if(mainScene.input.GetKey('q')){
 		camera.position.y +=  mainScene.timer.deltaTime;
