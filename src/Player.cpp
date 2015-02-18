@@ -4,12 +4,12 @@
 
 void Player::Update(const Scene& mainScene){
 	Vector3 newPos = camera.position;
-	float deltaTimeClamp = min(0.3f, mainScene.timer.deltaTime);
+	float deltaTimeClamp = min(0.53f, mainScene.timer.deltaTime);
 	if(mainScene.input.GetKey('w')){
 		Vector3 moveVec = camera.Forward();
 		moveVec.y = 0;
 		moveVec.Normalize();
-		newPos = newPos + moveVec * 3 * deltaTimeClamp;// mainScene.timer.deltaTime;
+		newPos = newPos + moveVec * 5 * deltaTimeClamp;// mainScene.timer.deltaTime;
 	}
 	if(mainScene.input.GetKey('s')){
 		Vector3 moveVec = camera.Forward() * -1;

@@ -38,8 +38,8 @@ Vector3 Level::ResolveCollisions(const Vector3& from, const Vector3& to) const{
 		Vector3 normal = CrossProduct(edge1, edge2).Normalized();
 
 		float toDist = DotProduct(localTo - Vector3(iter->start.x, 0, iter->start.y), normal);
-		//cout << "ToDist: " << toDist << "  FromDist: " << fromDist << endl;
-		if(toDist > -0.1501f && toDist < 0.1501f){
+		float fromDist = DotProduct(localFrom - Vector3(iter->start.x, 0, iter->start.y), normal);
+		if((fromDist > 0 ? (toDist < 0.15f) : (toDist > -0.15f))){
 			cout << "ToDist is within range.\n";
 			Vector2 floorProjection = Vector2(localFrom.x, localFrom.z);
 			Vector2 wallDiff = floorProjection - iter->start;
@@ -47,7 +47,7 @@ Vector3 Level::ResolveCollisions(const Vector3& from, const Vector3& to) const{
 			float overlap = DotProduct(wallDiff, wallVec);
 
 			if(overlap < (iter->end - iter->start).MagnitudeSquared() && overlap > 0 && localFrom.y <= iter->height + /*player height*/0.1f){
-				Vector3 collisionPlane = Vector3(iter->start.x, 0, iter->start.y) + normal * (toDist > 0 ? 0.15f : -0.15f);
+				Vector3 collisionPlane = Vector3(iter->start.x, 0, iter->start.y) + normal * (fromDist > 0 ? 0.15f : -0.15f);
 				Vector3 toProject = localTo - collisionPlane;
 				Vector3 projection = VectorProject(toProject, normal);
 				Vector3 result = (toProject - projection) + collisionPlane;
