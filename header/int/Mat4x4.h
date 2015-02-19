@@ -14,13 +14,13 @@ struct Mat4x4{
 	Vector3 operator*(const Vector3& param) const;
 	Mat4x4 operator*(const Mat4x4& param) const;
 
-	Vector4 Mat4x4::GetColumn(int index) const;
-	Vector4 Mat4x4::GetRow(int index) const;
+	Vector4 GetColumn(int index) const;
+	Vector4 GetRow(int index) const;
 
-	Mat4x4 Mat4x4::GetTranspose() const;
+	Mat4x4 GetTranspose() const;
 
-	void Mat4x4::SetRow(int index, const Vector4& value);
-	void Mat4x4::SetColumn(int index, const Vector4& value);
+	void SetRow(int index, const Vector4& value);
+	void SetColumn(int index, const Vector4& value);
 
 };
 

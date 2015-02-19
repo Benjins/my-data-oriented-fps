@@ -5,6 +5,7 @@
 #include "../header/int/Scene.h"
 
 #include <fstream>
+#include <cstring>
 
 using std::ifstream;
 

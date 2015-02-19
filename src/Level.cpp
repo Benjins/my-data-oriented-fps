@@ -1,6 +1,10 @@
-#include "..\header\int\Level.h"
-#include "..\header\int\Component.h"
-#include "..\header\int\Texture.h"
+#include "../header/int/Level.h"
+#include "../header/int/Component.h"
+#include "../header/int/Texture.h"
+
+#ifndef INT_MIN
+#define INT_MIN (1<<31)
+#endif
 
 float Level::FindHeight(const Vector3& position) const{
 	Vector3 localPos = transform.GlobalToLocal(position);

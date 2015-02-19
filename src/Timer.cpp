@@ -1,4 +1,4 @@
-#include "..\header\int\Timer.h"
+#include "../header/int/Timer.h"
 
 
 Timer::Timer(){

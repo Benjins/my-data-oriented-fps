@@ -1,10 +1,10 @@
-#include "..\header\int\Player.h"
-#include "..\header\int\Scene.h"
+#include "../header/int/Player.h"
+#include "../header/int/Scene.h"
 
 
 void Player::Update(const Scene& mainScene){
 	Vector3 newPos = camera.position;
-	float deltaTimeClamp = min(0.53f, mainScene.timer.deltaTime);
+	float deltaTimeClamp = min(0.53, mainScene.timer.deltaTime);
 	if(mainScene.input.GetKey('w')){
 		Vector3 moveVec = camera.Forward();
 		moveVec.y = 0;

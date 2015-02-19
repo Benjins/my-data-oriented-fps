@@ -1,4 +1,6 @@
+
 #include "../header/int/Mat4x4.h"
+#include <cstring>
 
 Mat4x4::Mat4x4(){
 	for(int j = 0; j < 4; j++){

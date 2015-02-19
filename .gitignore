@@ -8,6 +8,10 @@
 *.vcxproj
 *.vcxproj.*
 
+my-fps
+lib/*
+build.b
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
