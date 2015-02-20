@@ -28,3 +28,18 @@ void Timer::NextFrame(){
 #else
 #endif
 }
+
+double Timer::TimeSofar() const{
+	#if defined(_WIN32) || defined(_WIN64)
+	LARGE_INTEGER now;
+	QueryPerformanceCounter(&now);
+
+	long long int diff = now.QuadPart - prev.QuadPart;
+	double diffDec = (double)diff;
+
+	double timeSoFar = diffDec/freq.QuadPart;
+
+	return timeSoFar * 1000;
+#else
+#endif
+}

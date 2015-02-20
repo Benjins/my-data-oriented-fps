@@ -12,6 +12,7 @@ Scene::Scene(){
 }
 
 void Scene::Update(){
+	entities[0].transform.rotation = entities[0].transform.rotation * Quaternion(Y_AXIS, timer.deltaTime);
 	player.Update(*this);
 	for(int i = 0; i < enemyCount; i++){
 		enemies[i].Update(*this);

@@ -19,6 +19,8 @@ struct Timer{
 	Timer();
 
 	void NextFrame();
+
+	double TimeSofar() const;
 };
 
 

@@ -38,7 +38,7 @@ void RenderingComp::Render(const Scene& mainScene) const{
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, uvsVBO);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
-	
+
 	glDrawArrays(GL_TRIANGLES, 0, vertCount);
 	
 	glDisableVertexAttribArray(0);
@@ -145,7 +145,7 @@ void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType)
 	if (!success) {
 		GLchar InfoLog[1024];
 		glGetShaderInfoLog(ShaderObj, sizeof(InfoLog), NULL, InfoLog);
-		printf("Error compiling shader type %d: '%s'\n", ShaderType, InfoLog);
+		printf("Error compiling shader type %f: '%s'\n", ShaderType, InfoLog);
 	}
 
 }

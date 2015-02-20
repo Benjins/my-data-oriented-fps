@@ -44,7 +44,6 @@ Vector3 Level::ResolveCollisions(const Vector3& from, const Vector3& to) const{
 		float toDist = DotProduct(localTo - Vector3(iter->start.x, 0, iter->start.y), normal);
 		float fromDist = DotProduct(localFrom - Vector3(iter->start.x, 0, iter->start.y), normal);
 		if((fromDist > 0 ? (toDist < 0.15f) : (toDist > -0.15f))){
-			cout << "ToDist is within range.\n";
 			Vector2 floorProjection = Vector2(localFrom.x, localFrom.z);
 			Vector2 wallDiff = floorProjection - iter->start;
 			Vector2 wallVec = (iter->end - iter->start);

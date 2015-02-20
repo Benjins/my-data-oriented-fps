@@ -125,11 +125,11 @@ int main(int argc, char** argv){
 	mainScene.player.cameraHeight = 0.3f;
 
 	while(running){
-		glutMainLoopEvent();
 		mainScene.timer.NextFrame();
+		glutMainLoopEvent();
 		mainScene.Update();
 		Render();
-		glutPostRedisplay();
+		//glutPostRedisplay();
 		mainScene.input.EndFrame();
 
 		//cout << "Frame took: " << mainScene.timer.deltaTime * 1000 << " ms.\n";
@@ -144,8 +144,6 @@ int main(int argc, char** argv){
 
 void Render(){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	mainScene.entities[0].transform.rotation = Quaternion(Y_AXIS, mainScene.timer.totalTime);
 
 	mainScene.Render();
 
