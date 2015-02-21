@@ -96,7 +96,7 @@ int main(int argc, char** argv){
 	mainScene.level.walls.push_back(fWall3);
 	mainScene.level.walls.push_back(fWall4);
 
-	mainScene.level.SetRenderingCompMesh(*mainScene.AddRenderer(NULL), "data/Texture2.bmp");
+	mainScene.level.SetRenderingCompMesh(*mainScene.AddRenderer(NULL), "data/bad_wall_01D.bmp");
 
 	Entity* cube = mainScene.AddEntity();
 	cube->transform.position = Vector3(0,3,0);

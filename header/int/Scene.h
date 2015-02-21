@@ -52,6 +52,7 @@ struct Scene{
 	//Model* GetMesh();
 
 	RenderingComp* AddRenderer(const Entity* entity);
+	PhysicsComp* AddPhysics(const Entity* entity);
 	EnemyComp* AddEnemy(const Entity* entity);
 	Entity* AddEntity();
 };

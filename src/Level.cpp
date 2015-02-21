@@ -97,12 +97,13 @@ void Level::SetRenderingCompMesh(RenderingComp& rend, const string& texture){
 		verts.push_back(Vector3(wall.start.x, 0,           wall.start.y));
 		verts.push_back(Vector3(wall.end.x,   0,           wall.end.y));
 
+		uvs.push_back(Vector2(0,0));
 		uvs.push_back(Vector2(0,1));
 		uvs.push_back(Vector2(1,1));
-		uvs.push_back(Vector2(1,0));
-		uvs.push_back(Vector2(1,0));
-		uvs.push_back(Vector2(0,1));
+
 		uvs.push_back(Vector2(1,1));
+		uvs.push_back(Vector2(0,0));
+		uvs.push_back(Vector2(1,0));
 	}
 
 	rend.vertCount = verts.size();

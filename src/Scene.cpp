@@ -50,16 +50,29 @@ EnemyComp* Scene::AddEnemy(const Entity* entity){
 		return NULL;
 	}
 
-	if(entity == NULL){
-		enemies[enemyCount].entity = -1;
-	}
-	else{
+	if(entity != NULL){
 		enemies[enemyCount].entity = entity->id;
 	}
+
 	EnemyComp* enemy = &enemies[enemyCount];
 	enemy->speed = 0.6f;
 	enemyCount++;
 	return enemy;
+}
+
+PhysicsComp* Scene::AddPhysics(const Entity* entity){
+	if(physCount >= PHYSICS_COUNT){
+		cout << "\nHit max enemy limit.\n";
+		return NULL;
+	}
+
+	if(entity != NULL){
+		physics[physCount].entity = entity->id;
+	}
+
+	PhysicsComp* phys = &physics[physCount];
+	physCount++;
+	return phys;
 }
 
 Entity* Scene::AddEntity(){
