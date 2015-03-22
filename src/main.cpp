@@ -50,10 +50,10 @@ int main(int argc, char** argv){
 
 	
 	glutInit(&argc, argv);
-	glutInitWindowPosition(100,100);
-	glutInitWindowSize(1280, 720);
+	glutInitWindowPosition(0,0);
+	glutInitWindowSize(1920, 1080);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutCreateWindow("my-engine");
+	glutCreateWindow("my-fps");
 
 	glutMouseFunc(OnMouse);
 	glutPassiveMotionFunc(OnPassiveMouse);
@@ -77,19 +77,22 @@ int main(int argc, char** argv){
 	Floor floor = {Vector2(-6, -6), Vector2(6, 6), 0, 4.0f, 0};
 	Floor floor2 = {Vector2(-2, 1), Vector2(-1, 2), 0.2f, 5.0f, 1};
 	Floor floor3 = {Vector2(0, 2), Vector2(1, 3), 0.6f, 5.0f, 2};
-	Wall wall = {Vector2(2, 3), Vector2(5, 1), 1.0f};
-	Wall wall2 = {Vector2(4, -3), Vector2(5, 1), 1.0f};
 
-	Wall fWall1 = {Vector2(0, 2), Vector2(0, 3), 0.6f};
-	Wall fWall2 = {Vector2(1, 2), Vector2(1, 3), 0.6f};
-	Wall fWall3 = {Vector2(1, 2), Vector2(0, 2), 0.6f};
-	Wall fWall4 = {Vector2(1, 3), Vector2(0, 3), 0.6f};
+	Wall wall = {Vector2(2, 3), Vector2(5, 1), 1.0f, 0.15f};
+	Wall wall2 = {Vector2(4, -3), Vector2(5, 1), 1.0f, 0.15f};
+	Wall wall3 = {Vector2(4, -3), Vector2(1, -1), 1.0f, 0.15f};
+
+	Wall fWall1 = {Vector2(0, 2), Vector2(0, 3), 0.6f, 0.1f};
+	Wall fWall2 = {Vector2(1, 2), Vector2(1, 3), 0.6f, 0.1f};
+	Wall fWall3 = {Vector2(1, 2), Vector2(0, 2), 0.6f, 0.1f};
+	Wall fWall4 = {Vector2(1, 3), Vector2(0, 3), 0.6f, 0.1f};
 
 	mainScene.level.floors.push_back(floor);
 	mainScene.level.floors.push_back(floor2);
 	mainScene.level.floors.push_back(floor3);
 	mainScene.level.walls.push_back(wall);
 	mainScene.level.walls.push_back(wall2);
+	mainScene.level.walls.push_back(wall3);
 
 	mainScene.level.walls.push_back(fWall1);
 	mainScene.level.walls.push_back(fWall2);
@@ -102,6 +105,13 @@ int main(int argc, char** argv){
 	cube->transform.position = Vector3(0,3,0);
 	RenderingComp* comp = mainScene.AddRenderer(cube);
 	comp->SetMeshMatTexture("data/shader", "data/test.obj", "data/Texture.bmp");
+
+	Entity* reticle = mainScene.AddEntity();
+	reticle->transform.parent = &mainScene.player.camera;
+	reticle->transform.position = Vector3(0,0,0.1);
+	reticle->transform.scale = Vector3(0.001f,0.001f,0.001f);
+	RenderingComp* reticleRend = mainScene.AddRenderer(reticle);
+	reticleRend->SetMeshMatTexture("data/shader", "data/test.obj", "data/Texture2.bmp");
 
 	Entity* cube2 = mainScene.AddEntity();
 	cube2->transform.parent = &cube->transform;

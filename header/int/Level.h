@@ -14,6 +14,7 @@ struct Wall{
 	Vector2 start;
 	Vector2 end;
 	float height;
+	float width;
 };
 
 struct Floor{

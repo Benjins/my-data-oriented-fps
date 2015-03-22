@@ -33,24 +33,35 @@ bool BoundsContains(const Vector2& pt, const Vector2& ul, const Vector2& br){
 }
 
 Vector3 Level::ResolveCollisions(const Vector3& from, const Vector3& to) const{
-	Vector3 localFrom = transform.GlobalToLocal(from);
-	Vector3 localTo   = transform.GlobalToLocal(to);
+	Vector3 localFrom = from;// transform.GlobalToLocal(from);
+	Vector3 localTo   = to;// transform.GlobalToLocal(to);
 
 	for(auto iter = walls.begin(); iter != walls.end(); iter++){
+		float wallWidth = iter->width;
+
 		Vector3 edge1 = Vector3(iter->start.x, iter->height, iter->start.y) - Vector3(iter->start.x, 0, iter->start.y);
 		Vector3 edge2 = Vector3(iter->end.x, 0, iter->end.y) - Vector3(iter->start.x, 0, iter->start.y);
 		Vector3 normal = CrossProduct(edge1, edge2).Normalized();
 
 		float toDist = DotProduct(localTo - Vector3(iter->start.x, 0, iter->start.y), normal);
 		float fromDist = DotProduct(localFrom - Vector3(iter->start.x, 0, iter->start.y), normal);
-		if((fromDist > 0 ? (toDist < 0.15f) : (toDist > -0.15f))){
-			Vector2 floorProjection = Vector2(localFrom.x, localFrom.z);
-			Vector2 wallDiff = floorProjection - iter->start;
-			Vector2 wallVec = (iter->end - iter->start);
-			float overlap = DotProduct(wallDiff, wallVec);
+		if((fromDist > 0) ? (toDist < wallWidth) : (toDist > -wallWidth)){
+			Vector2 floorProjectionFrom = Vector2(localFrom.x, localFrom.z);
+			Vector2 wallDiffFrom = floorProjectionFrom - iter->start;
+			Vector2 wallVecFrom = (iter->end - iter->start);
+			float overlapFrom = DotProduct(wallDiffFrom, wallVecFrom);
 
-			if(overlap < (iter->end - iter->start).MagnitudeSquared() && overlap > 0 && localFrom.y <= iter->height + /*player height*/0.1f){
-				Vector3 collisionPlane = Vector3(iter->start.x, 0, iter->start.y) + normal * (fromDist > 0 ? 0.15f : -0.15f);
+			Vector2 floorProjectionTo = Vector2(localTo.x, localTo.z);
+			Vector2 wallDiffTo = floorProjectionTo - iter->start;
+			Vector2 wallVecTo = (iter->end - iter->start);
+			float overlapTo = DotProduct(wallDiffTo, wallVecTo);
+
+			bool isOverlapFrom = overlapFrom < (iter->end - iter->start).MagnitudeSquared() && overlapFrom > 0;
+			bool isOverlapTo = overlapTo < (iter->end - iter->start).MagnitudeSquared() && overlapTo > 0;
+
+			if((isOverlapFrom || isOverlapTo) && localFrom.y <= iter->height + /*player height*/0.1f){
+				cout << "Recalc pos.\n";
+				Vector3 collisionPlane = Vector3(iter->start.x, 0, iter->start.y) + normal * (fromDist > 0 ? wallWidth : -wallWidth) * 1.001f;
 				Vector3 toProject = localTo - collisionPlane;
 				Vector3 projection = VectorProject(toProject, normal);
 				Vector3 result = (toProject - projection) + collisionPlane;
