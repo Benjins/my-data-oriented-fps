@@ -60,7 +60,7 @@ Vector3 Level::ResolveCollisions(const Vector3& from, const Vector3& to) const{
 			bool isOverlapTo = overlapTo < (iter->end - iter->start).MagnitudeSquared() && overlapTo > 0;
 
 			if((isOverlapFrom || isOverlapTo) && localFrom.y <= iter->height + /*player height*/0.1f){
-				cout << "Recalc pos.\n";
+				//cout << "Recalc pos.\n";
 				Vector3 collisionPlane = Vector3(iter->start.x, 0, iter->start.y) + normal * (fromDist > 0 ? wallWidth : -wallWidth) * 1.001f;
 				Vector3 toProject = localTo - collisionPlane;
 				Vector3 projection = VectorProject(toProject, normal);

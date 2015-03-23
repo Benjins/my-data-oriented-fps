@@ -122,12 +122,12 @@ int main(int argc, char** argv){
 
 	Entity* enemy = mainScene.AddEntity();
 	enemy->transform.scale = Vector3(0.1f, 0.1f, 0.1f);
-	enemy->transform.position = Vector3(0, 0.3f, 0);
+	enemy->transform.position = Vector3(0, 0.3f, -5);
 	RenderingComp* enemyRend = mainScene.AddRenderer(enemy);
 	enemyRend->SetMeshMatTexture("data/shader", "data/test.obj", "data/Texture2.bmp");
 	EnemyComp* enemyComp = mainScene.AddEnemy(enemy);
 	enemyComp->targetPos = enemy->transform.position;
-	enemyComp->speed = 0.2f;
+	enemyComp->speed = 0.5f;
 
 
 	mainScene.player.camera.position = Vector3(0,0,0);

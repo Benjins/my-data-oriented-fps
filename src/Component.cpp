@@ -112,7 +112,7 @@ RenderingComp::~RenderingComp(){
 
 void EnemyComp::Update(Scene& mainScene){
 	Vector3 differenceVec = mainScene.player.camera.position - mainScene.entities[entity].transform.position;
-	if(differenceVec.MagnitudeSquared() <= 9.0f && differenceVec.MagnitudeSquared() >= 0.4f){
+	if(differenceVec.MagnitudeSquared() <= 9.0f && differenceVec.MagnitudeSquared() >= 0.1f){
 		targetPos = mainScene.player.camera.position;
 	}
 	else{
@@ -124,7 +124,11 @@ void EnemyComp::Update(Scene& mainScene){
 	if(goalVec.MagnitudeSquared() <= 0.00001f){
 		posChange = Vector3(0,0,0);
 	}
-	mainScene.entities[entity].transform.position = mainScene.entities[entity].transform.position + posChange;
+
+	Vector3 currentPos = mainScene.entities[entity].transform.position;
+	Vector3 targetPos = currentPos + posChange;
+	mainScene.entities[entity].transform.position = mainScene.level.ResolveCollisions(currentPos, targetPos);
+
 	mainScene.entities[entity].transform.position.y = mainScene.level.FindHeight(mainScene.entities[entity].transform.position) + 0.1f;
 }
 
