@@ -18,7 +18,7 @@ struct Player{
 	float gravity;
 	PLAYER_STATE state;
 
-	void Update(const Scene& mainScene);
+	void Update(Scene& mainScene);
 };
 
 #endif

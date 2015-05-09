@@ -1,8 +1,10 @@
 #include "../header/int/Player.h"
 #include "../header/int/Scene.h"
+#include "../header/int/RaycastHit.h"
+#include <GL/freeglut.h>
 
 
-void Player::Update(const Scene& mainScene){
+void Player::Update(Scene& mainScene){
 	Vector3 newPos = camera.position;
 	float deltaTimeClamp = min(0.33, mainScene.timer.deltaTime);
 	if(mainScene.input.GetKey('w')){
@@ -71,5 +73,13 @@ void Player::Update(const Scene& mainScene){
 
 	camera.rotation = Quaternion(Y_AXIS, mainScene.input.mouseX/80) *  Quaternion(X_AXIS, mainScene.input.mouseY/80);
 
+	if(mainScene.input.GetMouseUp(GLUT_LEFT_BUTTON)){
+		cout << "Pressed mouse.\n";
+		RaycastHit screenRay = mainScene.Raycast(camera.position, camera.Forward());
+		if(screenRay.hit){
+			cout << "Hit!\n";
+			mainScene.enemies[0].SetPosition(mainScene, screenRay.worldPos);
+		}
+	}
 }
 

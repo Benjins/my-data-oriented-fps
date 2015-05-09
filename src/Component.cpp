@@ -132,6 +132,10 @@ void EnemyComp::Update(Scene& mainScene){
 	mainScene.entities[entity].transform.position.y = mainScene.level.FindHeight(mainScene.entities[entity].transform.position) + 0.1f;
 }
 
+void EnemyComp::SetPosition(Scene& mainScene, Vector3 newPos){
+	mainScene.entities[entity].transform.position = newPos;
+}
+
 void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType){
     GLuint ShaderObj = glCreateShader(ShaderType);
 

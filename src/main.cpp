@@ -51,7 +51,7 @@ int main(int argc, char** argv){
 	
 	glutInit(&argc, argv);
 	glutInitWindowPosition(0,0);
-	glutInitWindowSize(1920, 1080);
+	glutInitWindowSize(1280, 720);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutCreateWindow("my-fps");
 

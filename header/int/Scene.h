@@ -15,6 +15,8 @@
 #define ENTITY_COUNT 12
 #define ENEMY_COUNT 12
 
+struct RaycastHit;
+
 struct Scene{
 
 	Input input;
@@ -48,6 +50,8 @@ struct Scene{
 	void Update();
 
 	void Render();
+
+	RaycastHit Raycast(Vector3 origin, Vector3 direction) const;
 
 	//Model* GetMesh();
 

@@ -1,4 +1,5 @@
 #include "../header/int/Scene.h"
+#include "../header/int/RaycastHit.h"
 
 Scene::Scene(){
 	meshCount = 0;
@@ -15,15 +16,40 @@ void Scene::Update(){
 	entities[0].transform.rotation = entities[0].transform.rotation * Quaternion(Y_AXIS, timer.deltaTime);
 	player.Update(*this);
 	for(int i = 0; i < enemyCount; i++){
-		enemies[i].Update(*this);
+		//enemies[i].Update(*this);
 	}
-	cout << "Time for this frame: " << timer.deltaTime * 1000 << " ms.\n";
+	//cout << "Time for this frame: " << timer.deltaTime * 1000 << " ms.\n";
 }
 
 void Scene::Render(){
 	for(int i = 0; i < rendCount; i++){
 		rendering[i].Render(*this);
 	}
+}
+
+RaycastHit Scene::Raycast(Vector3 origin, Vector3 direction) const{
+	
+	RaycastHit x;
+	x.hit = false;
+	x.depth = FLT_MAX;
+
+	//Iterate over level walls
+	for(int i = 0; i < level.walls.size(); i++){
+		RaycastHit wallHit = RaycastWall(origin, direction, level.walls[i]);
+		if(wallHit.hit && wallHit.depth < x.depth){
+			x = wallHit;
+		}
+	}
+
+	//And now floors
+	for(int i = 0; i < level.floors.size(); i++){
+		RaycastHit floorHit = RaycastFloor(origin, direction, level.floors[i]);
+		if(floorHit.hit && floorHit.depth < x.depth){
+			x = floorHit;
+		}
+	}
+
+	return x;
 }
 
 //Pass NULL to add the rendering component for the level

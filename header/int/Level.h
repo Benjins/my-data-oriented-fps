@@ -8,7 +8,7 @@
 
 using std::vector;
 
-struct RenderingComp;
+struct RenderingComp; struct RaycastHit;
 
 struct Wall{
 	Vector2 start;
@@ -41,10 +41,12 @@ struct Level{
 
 bool BoundsContains(const Vector2& pt, const Vector2& ul, const Vector2& br);
 
+RaycastHit RaycastWall(Vector3 origin, Vector3 direction, Wall wall);
+
+RaycastHit RaycastFloor(Vector3 origin, Vector3 direction, Floor floor);
+
 /*-----Planning-----
 -Different height floors, ramps/stairs, walls, 
--ability to get height at any x-z point
--Bake level into a model
 */
 
 #endif

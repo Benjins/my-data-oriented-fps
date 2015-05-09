@@ -1,6 +1,7 @@
 #include "../header/int/Level.h"
 #include "../header/int/Component.h"
 #include "../header/int/Texture.h"
+#include "../header/int/RaycastHit.h"
 
 #ifndef INT_MIN
 #define INT_MIN (1<<31)
@@ -156,3 +157,74 @@ void Level::SetRenderingCompMesh(RenderingComp& rend, const string& texture){
 	glValidateProgram(rend.shaderProgram);
 }
 
+RaycastHit RaycastFloor(Vector3 origin, Vector3 direction, Floor floor){
+	float yDiff = origin.y - floor.floorHeight;
+	float hitDepth = yDiff/direction.y;
+
+	if(hitDepth >= -0.0001f){
+		RaycastHit x;
+		x.hit = false;
+		return x;
+	}
+
+	Vector3 projectedPositon = origin - (direction.Normalized() * hitDepth);
+	if(	   projectedPositon.x >= floor.ulCorner.x && projectedPositon.x <= floor.brCorner.x 
+		&& projectedPositon.y >= floor.ulCorner.y && projectedPositon.y <= floor.brCorner.y)
+	{
+		RaycastHit x;
+		x.hit = true;
+		x.depth = -hitDepth;
+		x.worldPos = projectedPositon;
+		return x;
+	}
+
+	RaycastHit x;
+	x.hit = false;
+	return x;
+}
+
+RaycastHit RaycastWall(Vector3 origin, Vector3 direction, Wall wall){
+	float yMin=0, yMax=wall.height;
+	Vector3 directionNormal = direction.Normalized();
+
+	Vector3 wallToOrigin = origin - Vector3(wall.start.x, 0, wall.start.y);
+
+	Vector2 wallTangent = wall.end - wall.start;
+	float wallLength = wallTangent.Magnitude();
+	wallTangent = wallTangent / wallLength;
+
+	Vector3 wallTangent3d = Vector3(wallTangent.x, 0, wallTangent.y);
+	Vector3 wallNormal3d  = CrossProduct(wallTangent3d, Y_AXIS);
+	
+	Vector3 transformedOrigin = Vector3(DotProduct(wallToOrigin, wallTangent3d),
+										wallToOrigin.y,
+										DotProduct(wallToOrigin, wallNormal3d));
+
+	Vector3 transformedDirection = Vector3( DotProduct(directionNormal, wallTangent3d),
+											directionNormal.y,
+											DotProduct(directionNormal, wallNormal3d));
+
+	float planeCollisionDepth = transformedOrigin.z/transformedDirection.z;
+
+	if(planeCollisionDepth >= -0.0001f){
+		RaycastHit x;
+		x.hit = false;
+		return x;
+	}
+
+	Vector3 potentialCollision = transformedOrigin - (transformedDirection * planeCollisionDepth);
+	
+	if(	 potentialCollision.x <= wallLength    && potentialCollision.x >= 0
+	  && potentialCollision.y <= wall.height && potentialCollision.y >= 0)
+	{
+		RaycastHit x;
+		x.hit = true;
+		x.depth = -planeCollisionDepth;
+		x.worldPos = origin - (direction * planeCollisionDepth);
+		return x;
+	}
+
+	RaycastHit x;
+	x.hit = false;
+	return x;
+}

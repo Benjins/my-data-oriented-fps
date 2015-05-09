@@ -47,6 +47,7 @@ struct EnemyComp : public Component{
 	float speed;
 
 	void Update(Scene& mainScene);
+	void SetPosition(Scene& mainScene, Vector3 newPos);
 };
 
 Mat4x4 GetPerspectiveMatrix(float aspectRatio, float fieldOfView, float nearZ, float farZ);
