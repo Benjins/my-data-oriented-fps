@@ -28,6 +28,8 @@ struct RenderingComp : public Component{
 
 	void SetMeshMatTexture(const string& shader, const string& mesh, const string& texture);
 
+	void Release();
+
 	~RenderingComp();
 };
 
@@ -45,8 +47,16 @@ struct PhysicsComp : public Component{
 struct EnemyComp : public Component{
 	Vector3 targetPos;
 	float speed;
+	int health;
 
 	void Update(Scene& mainScene);
+
+	void OnRaycastHit(Scene& mainScene, RaycastHit hit);
+};
+
+struct GenericComp : public Component{
+	virtual void Update(Scene& mainScene){}
+	virtual void OnRaycastHit(Scene& mainScene, RaycastHit hit);
 };
 
 RaycastHit RaycastBox(Entity ent, PhysicsComp enemy, Vector3 origin, Vector3 direction);

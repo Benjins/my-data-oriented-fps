@@ -132,6 +132,7 @@ int main(int argc, char** argv){
 	EnemyComp* enemyComp = mainScene.AddEnemy(enemy);
 	enemyComp->targetPos = enemy->transform.position;
 	enemyComp->speed = 0.5f;
+	enemyComp->health = 5;
 
 	PhysicsComp* physComp = mainScene.AddPhysics(enemy);
 	physComp->position = Vector3(0,0,0);

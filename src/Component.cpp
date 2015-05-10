@@ -105,6 +105,13 @@ void RenderingComp::SetMeshMatTexture(const string& shader, const string& mesh, 
 	glValidateProgram(shaderProgram);
 }
 
+void RenderingComp::Release(){
+	if(texObject != NULL){
+		delete texObject;
+		texObject = NULL;
+	}	
+}
+
 RenderingComp::~RenderingComp(){
 	if(texObject != NULL){
 		delete texObject;
@@ -128,10 +135,20 @@ void EnemyComp::Update(Scene& mainScene){
 
 	Vector3 currentPos = mainScene.entities[entity].transform.position;
 	Vector3 targetPos = currentPos + posChange;
-	mainScene.entities[entity].transform.position = mainScene.level.ResolveCollisions(currentPos, targetPos);
+	if((targetPos - currentPos).MagnitudeSquared() >= 0.0000001f){
+		mainScene.entities[entity].transform.position = mainScene.level.ResolveCollisions(currentPos, targetPos);
 
-	mainScene.entities[entity].transform.position.y = mainScene.level.FindHeight(mainScene.entities[entity].transform.position)
-		+ mainScene.entities[entity].transform.scale.y/2;
+		mainScene.entities[entity].transform.position.y = mainScene.level.FindHeight(mainScene.entities[entity].transform.position)
+														+ mainScene.entities[entity].transform.scale.y/2;
+	}
+}
+
+void EnemyComp::OnRaycastHit(Scene& mainScene, RaycastHit hit){
+	health--;
+	mainScene.entities[entity].transform.scale.y = ((float)health)/10 + 0.3f;
+	if(health <= 0){
+		mainScene.RemoveEntity(&mainScene.entities[entity]);
+	}
 }
 
 void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType){
@@ -200,8 +217,8 @@ RaycastHit RaycastBox(Entity ent, PhysicsComp physBox, Vector3 origin, Vector3 d
 	if(intervalMin < intervalMax && intervalMin <= -0.0001f){
 		RaycastHit x;
 		x.hit = true;
-		x.depth = intervalMin;
-		x.worldPos = origin - direction * x.depth;
+		x.depth = -intervalMin;
+		x.worldPos = origin + direction * x.depth;
 
 		return x;
 	}

@@ -6,6 +6,7 @@
 struct RaycastHit{
 	Vector3 worldPos;
 	float depth;
+	int entityId;
 	bool hit;
 };
 

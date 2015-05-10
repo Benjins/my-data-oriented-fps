@@ -59,6 +59,7 @@ struct Scene{
 	PhysicsComp* AddPhysics(const Entity* entity);
 	EnemyComp* AddEnemy(const Entity* entity);
 	Entity* AddEntity();
+	void RemoveEntity(Entity* ent);
 };
 
 #endif

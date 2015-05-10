@@ -76,7 +76,15 @@ void Player::Update(Scene& mainScene){
 	if(mainScene.input.GetMouseUp(GLUT_LEFT_BUTTON)){
 		RaycastHit screenRay = mainScene.Raycast(camera.position, camera.Forward());
 		if(screenRay.hit){
-			mainScene.entities[0].transform.position = screenRay.worldPos;
+			//mainScene.entities[0].transform.position = screenRay.worldPos;
+			if(screenRay.entityId >= 0){
+				for(int i = 0; i < mainScene.enemyCount; i++){
+					if(mainScene.enemies[i].entity == screenRay.entityId){
+						mainScene.enemies[i].OnRaycastHit(mainScene, screenRay);
+						break;
+					}
+				}
+			}
 		}
 	}
 }
