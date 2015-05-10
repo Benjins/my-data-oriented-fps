@@ -57,6 +57,7 @@ int main(int argc, char** argv){
 
 	glutMouseFunc(OnMouse);
 	glutPassiveMotionFunc(OnPassiveMouse);
+	glutMotionFunc(OnPassiveMouse);
 
 	glutKeyboardFunc(OnKey);
 	glutKeyboardUpFunc(OnKeyUp);
@@ -103,6 +104,7 @@ int main(int argc, char** argv){
 
 	Entity* cube = mainScene.AddEntity();
 	cube->transform.position = Vector3(0,3,0);
+	cube->transform.scale = Vector3(0.1f,0.1f,0.1f);
 	RenderingComp* comp = mainScene.AddRenderer(cube);
 	comp->SetMeshMatTexture("data/shader", "data/test.obj", "data/Texture.bmp");
 
@@ -121,14 +123,19 @@ int main(int argc, char** argv){
 	cube2Rend->SetMeshMatTexture("data/shader", "data/test.obj", "data/Texture2.bmp");
 
 	Entity* enemy = mainScene.AddEntity();
-	enemy->transform.scale = Vector3(0.1f, 0.1f, 0.1f);
+	enemy->transform.scale = Vector3(0.2f, 0.4f, 0.2f);
 	enemy->transform.position = Vector3(0, 0.3f, -5);
+
 	RenderingComp* enemyRend = mainScene.AddRenderer(enemy);
 	enemyRend->SetMeshMatTexture("data/shader", "data/test.obj", "data/Texture2.bmp");
+
 	EnemyComp* enemyComp = mainScene.AddEnemy(enemy);
 	enemyComp->targetPos = enemy->transform.position;
 	enemyComp->speed = 0.5f;
 
+	PhysicsComp* physComp = mainScene.AddPhysics(enemy);
+	physComp->position = Vector3(0,0,0);
+	physComp->size = Vector3(0.5f, 0.5f, 0.5f);
 
 	mainScene.player.camera.position = Vector3(0,0,0);
 	mainScene.player.gravity = 2;

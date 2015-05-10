@@ -74,11 +74,9 @@ void Player::Update(Scene& mainScene){
 	camera.rotation = Quaternion(Y_AXIS, mainScene.input.mouseX/80) *  Quaternion(X_AXIS, mainScene.input.mouseY/80);
 
 	if(mainScene.input.GetMouseUp(GLUT_LEFT_BUTTON)){
-		cout << "Pressed mouse.\n";
 		RaycastHit screenRay = mainScene.Raycast(camera.position, camera.Forward());
 		if(screenRay.hit){
-			cout << "Hit!\n";
-			mainScene.enemies[0].SetPosition(mainScene, screenRay.worldPos);
+			mainScene.entities[0].transform.position = screenRay.worldPos;
 		}
 	}
 }

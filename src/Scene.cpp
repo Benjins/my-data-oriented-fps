@@ -16,7 +16,7 @@ void Scene::Update(){
 	entities[0].transform.rotation = entities[0].transform.rotation * Quaternion(Y_AXIS, timer.deltaTime);
 	player.Update(*this);
 	for(int i = 0; i < enemyCount; i++){
-		//enemies[i].Update(*this);
+		enemies[i].Update(*this);
 	}
 	//cout << "Time for this frame: " << timer.deltaTime * 1000 << " ms.\n";
 }
@@ -46,6 +46,14 @@ RaycastHit Scene::Raycast(Vector3 origin, Vector3 direction) const{
 		RaycastHit floorHit = RaycastFloor(origin, direction, level.floors[i]);
 		if(floorHit.hit && floorHit.depth < x.depth){
 			x = floorHit;
+		}
+	}
+
+	for(int i = 0; i < physCount; i++){
+		Entity ent = entities[physics[i].entity];
+		RaycastHit boxHit = RaycastBox(ent, physics[i], origin, direction);
+		if(boxHit.hit && boxHit.depth < x.depth){
+			x = boxHit;
 		}
 	}
 

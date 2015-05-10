@@ -3,6 +3,7 @@
 #include "../header/int/Model.h"
 #include "../header/int/Texture.h"
 #include "../header/int/Scene.h"
+#include "../header/int/RaycastHit.h"
 
 #include <fstream>
 #include <cstring>
@@ -129,11 +130,8 @@ void EnemyComp::Update(Scene& mainScene){
 	Vector3 targetPos = currentPos + posChange;
 	mainScene.entities[entity].transform.position = mainScene.level.ResolveCollisions(currentPos, targetPos);
 
-	mainScene.entities[entity].transform.position.y = mainScene.level.FindHeight(mainScene.entities[entity].transform.position) + 0.1f;
-}
-
-void EnemyComp::SetPosition(Scene& mainScene, Vector3 newPos){
-	mainScene.entities[entity].transform.position = newPos;
+	mainScene.entities[entity].transform.position.y = mainScene.level.FindHeight(mainScene.entities[entity].transform.position)
+		+ mainScene.entities[entity].transform.scale.y/2;
 }
 
 void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum ShaderType){
@@ -177,6 +175,40 @@ bool ReadFile(string fileName, string& readInto){
         cerr << fileName << ": unable to open file.\n";
 		return false;
     }
+}
+
+RaycastHit RaycastBox(Entity ent, PhysicsComp physBox, Vector3 origin, Vector3 direction){
+	float intervalMin = -FLT_MAX;
+	float intervalMax =  FLT_MAX;
+
+	float xRangeCenter = (origin.x - ent.transform.position.x)/direction.x;
+	float yRangeCenter = (origin.y - ent.transform.position.y)/direction.y;
+	float zRangeCenter = (origin.z - ent.transform.position.z)/direction.z;
+
+	float xRangeWidth = abs(physBox.size.x/direction.x);
+	float yRangeWidth = abs(physBox.size.y/direction.y);
+	float zRangeWidth = abs(physBox.size.z/direction.z);
+
+	intervalMin = max(intervalMin, xRangeCenter - xRangeWidth);
+	intervalMin = max(intervalMin, yRangeCenter - yRangeWidth);
+	intervalMin = max(intervalMin, zRangeCenter - zRangeWidth);
+
+	intervalMax = min(intervalMax, xRangeCenter + xRangeWidth);
+	intervalMax = min(intervalMax, yRangeCenter + yRangeWidth);
+	intervalMax = min(intervalMax, zRangeCenter + zRangeWidth);
+
+	if(intervalMin < intervalMax && intervalMin <= -0.0001f){
+		RaycastHit x;
+		x.hit = true;
+		x.depth = intervalMin;
+		x.worldPos = origin - direction * x.depth;
+
+		return x;
+	}
+
+	RaycastHit x;
+	x.hit = false;
+	return x;
 }
 
 Mat4x4 GetPerspectiveMatrix(float aspectRatio, float fieldOfView, float nearZ, float farZ){

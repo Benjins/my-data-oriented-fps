@@ -8,7 +8,7 @@
 
 using std::string;
 
-struct Entity; struct Texture; struct Mat4x4; struct Scene;
+struct Entity; struct Texture; struct Mat4x4; struct Scene; struct RaycastHit;
 
 struct Component{
 	int id;
@@ -47,8 +47,9 @@ struct EnemyComp : public Component{
 	float speed;
 
 	void Update(Scene& mainScene);
-	void SetPosition(Scene& mainScene, Vector3 newPos);
 };
+
+RaycastHit RaycastBox(Entity ent, PhysicsComp enemy, Vector3 origin, Vector3 direction);
 
 Mat4x4 GetPerspectiveMatrix(float aspectRatio, float fieldOfView, float nearZ, float farZ);
 

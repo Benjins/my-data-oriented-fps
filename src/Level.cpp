@@ -169,7 +169,7 @@ RaycastHit RaycastFloor(Vector3 origin, Vector3 direction, Floor floor){
 
 	Vector3 projectedPositon = origin - (direction.Normalized() * hitDepth);
 	if(	   projectedPositon.x >= floor.ulCorner.x && projectedPositon.x <= floor.brCorner.x 
-		&& projectedPositon.y >= floor.ulCorner.y && projectedPositon.y <= floor.brCorner.y)
+		&& projectedPositon.z >= floor.ulCorner.y && projectedPositon.z <= floor.brCorner.y)
 	{
 		RaycastHit x;
 		x.hit = true;
